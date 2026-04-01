@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Geral CN/EPCAr · Matriz Educação</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f7fa; --white: #ffffff; --border: #e5e9f0;
+  --text: #1a2332; --text2: #4b5a6e; --text3: #8b99ab;
+  --navy: #1e3a5f; --navy2: #2d5282;
+  --blue: #3b82f6; --blue-soft: #eff6ff;
+  --green: #16a34a; --green-soft: #f0fdf4;
+  --red: #dc2626; --red-soft: #fef2f2;
+  --radius: 14px;
+  --shadow: 0 4px 16px rgba(0,0,0,.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); }
+
+.site-header { background: var(--white); border-bottom: 2px solid var(--border); position: sticky; top: 0; z-index: 100; padding: 10px 20px; }
+.header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+.logo { font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+.main-nav { display: flex; gap: 5px; flex-wrap: wrap; }
+
+.nav-btn { 
+  padding: 8px 14px; border-radius: 8px; border: 1px solid transparent; 
+  background: transparent; cursor: pointer; font-weight: 700; font-size: 13px; color: var(--text2);
+}
+.nav-btn.active { background: var(--navy); color: white; }
+
+.page-wrap { max-width: 1300px; margin: 20px auto; padding: 0 20px; }
+.section { display: none; }
+.section.active { display: block; }
+
+.ranking-card { background: white; padding: 25px; border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow); }
+.ranking-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+.ranking-table th { text-align: left; padding: 12px; border-bottom: 2px solid var(--border); font-size: 12px; color: var(--text3); }
+.ranking-table td { padding: 12px; border-bottom: 1px solid var(--border); font-size: 14px; }
+.ranking-row:hover { background: var(--bg); }
+
+.chip { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; }
+.chip-aprov { background: var(--green-soft); color: var(--green); }
+.chip-reprov { background: var(--red-soft); color: var(--red); }
+
+.search-input { padding: 10px; border: 1px solid var(--border); border-radius: 8px; width: 100%; max-width: 300px; }
+
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+.stat-item { background: white; padding: 15px; border-radius: 10px; border-left: 4px solid var(--blue); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">⚓ Dashboard Matriz <span>CN/EPCAr 2026</span></div>
+    <nav class="main-nav">
+      <button class="nav-btn" onclick="goSec('em1', this)">📚 EM — 28/02</button>
+      <button class="nav-btn" onclick="goSec('9mil1', this)">🎓 9MIL — 28/02</button>
+      <button class="nav-btn active" onclick
