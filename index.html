@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Metas 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --g9:#14532d;--g8:#166534;--g7:#15803d;--g6:#16a34a;--g5:#22c55e;--g1:#dcfce7;--g0:#f0fdf4;
+  --b6:#2563eb;--b1:#dbeafe;
+  --a6:#d97706;--a1:#fef3c7;
+  --r6:#dc2626;--r1:#fee2e2;
+  --n9:#111827;--n7:#374151;--n5:#6b7280;--n4:#9ca3af;--n3:#d1d5db;--n2:#e5e7eb;--n1:#f3f4f6;--n0:#f9fafb;
+  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
+  --shm:0 4px 8px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.05);
+  --shl:0 8px 24px rgba(0,0,0,.09),0 4px 8px rgba(0,0,0,.06);
+  --r:10px;--rl:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--n0);color:var(--n9);min-height:100vh;-webkit-font-smoothing:antialiased}
+.hdr{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,var(--g9),var(--g8));
+  padding:0 32px;height:64px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 16px rgba(0,0,0,.22)}
+.hdr-logo{height:46px;object-fit:contain;flex-shrink:0}
+.hdr h1{font-size:17px;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:.3px}
+.hdr p{font-size:11px;color:rgba(255,255,255,.55);margin-top:2px}
+.hdr-pill{margin-left:auto;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  color:#fff;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.nav{background:#fff;border-bottom:1px solid var(--n2);padding:0 32px;height:48px;
+  display:flex;align-items:center;gap:6px;overflow-x:auto;scrollbar-width:none;box-shadow:var(--sh)}
+.nav::-webkit-scrollbar{display:none}
+.nav-lbl{font-size:10px;font-weight:700;color:var(--n4);text-transform:uppercase;letter-spacing:.6px;margin-right:4px;white-space:nowrap;flex-shrink:0}
+.nb{flex-shrink:0;padding:5px 13px;border-radius:20px;border:1.5px solid var(--n2);background:#fff;
+  color:var(--n5);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+.nb:hover{border-color:var(--g5);color:var(--g7);background:var(--g0)}
+.nb.on{background:linear-gradient(135deg,var(--g8),var(--g7));border-color:transparent;color:#fff;
+  box-shadow:0 2px 8px rgba(21,128,61,.3);font-weight:700}
+.main{padding:24px 32px;max-width:1440px;margin:0 auto}
+.tabs{display:inline-flex;background:var(--n2);border-radius:12px;padding:3px;gap:2px;margin-bottom:24px}
+.tb{padding:7px 20px;border-radius:9px;border:none;background:transparent;color:var(--n5);
+  font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
+.tb:hover{color:var(--n9)}
+.tb.on{background:#fff;color:var(--n9);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.view{display:none}.view.on{display:block}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:28px}
+.kpi{background:#fff;border-radius:var(--rl);padding:18px 20px;box-shadow:var(--shm);
+  border:1px solid var(--n1);display:flex;gap:14px;align-items:flex-start}
+.kpi-bar{width:4px;border-radius:2px;align-self:stretch;flex-shrink:0}
+.kpi-body{flex:1}
+.kpi-ico{font-size:20px;margin-bottom:6px}
+.kpi-n{font-size:34px;font-weight:900;line-height:1;letter-spacing:-1px}
+.kpi-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--n5);margin-top:2px}
+.kpi-sub{font-size:11px;color:var(--n4);margin-top:3px}
+.kpi.bl .kpi-bar{background:var(--b6)}.kpi.bl .kpi-n{color:var(--b6)}
+.kpi.gn .kpi-bar{background:var(--g6)}.kpi.gn .kpi-n{color:var(--g6)}
+.kpi.am .kpi-bar{background:var(--a6)}.kpi.am .kpi-n{color:var(--a6)}
+.kpi.rd .kpi-bar{background:var(--r6)}.kpi.rd .kpi-n{color:var(--r6)}
+.kpi.gy .kpi-bar{background:var(--n4)}.kpi.gy .kpi-n{color:var(--n5)}
+.slbl{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--n4);
+  margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.slbl::after{content:'';flex:1;height:1px;background:var(--n2)}
+.cg{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:20px}
+.cc{background:#fff;border-radius:var(--rl);overflow:hidden;box-shadow:var(--shm);
+  border:1px solid var(--n2);cursor:pointer;transition:all .18s;user-select:none}
+.cc:hover{box-shadow:var(--shl);transform:translateY(-2px);border-color:var(--g5)}
+.cc-bar{height:3px}
+.bar-gn{background:linear-gradient(90deg,var(--g5),var(--g6))}
+.bar-am{background:linear-gradient(90deg,#f59e0b,var(--a6))}
+.bar-rd{background:linear-gradient(90deg,#f87171,var(--r6))}
+.bar-gy{background:var(--n3)}
+.cc-body{padding:15px 16px}
+.cc-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cc-name{font-size:14px;font-weight:800;color:var(--n9)}
+.bge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.bge-gn{background:var(--g1);color:var(--g7);border:1px solid #bbf7d0}
+.bge-am{background:var(--a1);color:#92400e;border:1px solid #fde68a}
+.bge-rd{background:var(--r1);color:var(--r6);border:1px solid #fecaca}
+.bge-gy{background:var(--n1);color:var(--n5)}
+.cc-nums{display:flex;gap:10px;margin-bottom:11px}
+.cc-num{flex:1;background:var(--n0);border-radius:8px;padding:7px 8px;text-align:center;border:1px solid var(--n1)}
+.cc-num .ln{font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:var(--n4);font-weight:700;margin-bottom:2px}
+.cc-num .lv{font-size:16px;font-weight:900;line-height:1}
+.lv-bl{color:var(--b6)}.lv-gn{color:var(--g7)}.lv-am{color:var(--a6)}.lv-rd{color:var(--r6)}.lv-gy{color:var(--n4)}
+.cc-prog{background:var(--n1);border-radius:99px;height:7px;overflow:hidden;margin-bottom:8px}
+.cc-prog-f{height:100%;border-radius:99px;transition:width .4s ease}
+.cc-hint{font-size:10px;color:var(--n4);text-align:right}
+/* DETAIL DASHBOARD */
+.det{animation:fadeIn .2s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+.det-back{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--n2);
+  border-radius:var(--r);padding:9px 18px;font-size:12px;font-weight:700;color:var(--n5);
+  cursor:pointer;margin-bottom:22px;transition:all .15s;user-select:none;box-shadow:var(--sh)}
+.det-back:hover{background:var(--n1);color:var(--n9);border-color:var(--n3)}
+.det-title-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:10px}
+.det-no-sim{background:var(--n0);border-radius:var(--r);padding:24px;text-align:center;color:var(--n5);font-size:13px;border:1px solid var(--n2)}
+.det-sim-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:20px}
+.det-sim-card{border:1px solid var(--n2);border-radius:var(--r);overflow:hidden;box-shadow:var(--shm)}
+.det-sim-hdr{background:linear-gradient(135deg,var(--g9),var(--g8));padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+.det-sim-title{font-size:14px;font-weight:800;color:#fff}
+.det-sim-sub{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px}
+.det-sim-right{display:flex;align-items:center;gap:8px}
+.det-sim-total{font-size:24px;font-weight:900;color:#fff;line-height:1}
+.det-sim-body{padding:14px 16px;background:#fff}
+.det-sim-section{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--n4);margin-bottom:10px}
+.det-sim-footer{background:var(--n0);border-top:1px solid var(--n2);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.sf-lbl{font-size:11px;color:var(--n5);font-weight:600}
+.sf-val{font-size:13px;font-weight:800;color:var(--n7)}
+.sim-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sim-bar-lbl{font-size:12px;font-weight:600;color:var(--n7);width:90px;flex-shrink:0;text-align:right}
+.sim-bar-track{flex:1;background:var(--n1);border-radius:4px;height:22px;overflow:hidden}
+.sim-bar-fill{height:100%;border-radius:4px;display:flex;align-items:center;padding-left:8px;min-width:0;transition:width .4s ease}
+.sim-bar-val{font-size:11px;font-weight:800;color:#fff;white-space:nowrap}
+.sim-bar-meta{font-size:11px;color:var(--n5);width:44px;flex-shrink:0;text-align:right;font-weight:600}
+.sim-bar-pct{font-size:11px;font-weight:800;width:36px;flex-shrink:0;text-align:right}
+.sim-trend-up{color:var(--g6);font-weight:700;font-size:12px}
+.sim-trend-dn{color:var(--r6);font-weight:700;font-size:12px}
+.proj-row{border:1.5px solid var(--b6);border-radius:var(--r);overflow:hidden}
+.proj-row-hdr{background:var(--b1);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #bfdbfe}
+.proj-row-title{font-size:13px;font-weight:800;color:var(--b6)}
+.proj-row-total{font-size:13px;font-weight:700;color:var(--b6)}
+.proj-row-content{padding:14px 16px;background:#fff}
+/* VISÃO GERAL */
+.fil-bar{display:flex;gap:12px;align-items:center;margin-bottom:18px;flex-wrap:wrap}
+.fil-bar label{font-size:12px;font-weight:700;color:var(--n5)}
+.fil-sel{background:#fff;border:1.5px solid var(--n3);border-radius:var(--r);font-size:13px;
+  font-weight:600;padding:7px 14px;outline:none;cursor:pointer;color:var(--n9);transition:border-color .15s}
+.fil-sel:focus{border-color:var(--g6)}
+.tbl-wrap{border-radius:var(--rl);overflow:hidden;box-shadow:var(--shm);border:1px solid var(--n2);margin-bottom:28px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+thead tr:first-child th{background:var(--g9);color:#fff;padding:10px 12px;text-align:center;
+  font-weight:700;text-transform:uppercase;letter-spacing:.5px;font-size:10px;white-space:nowrap}
+thead tr:first-child th:first-child{text-align:left}
+thead tr:nth-child(2) th{background:var(--g8);color:rgba(255,255,255,.8);padding:7px 10px;
+  text-align:center;font-size:10px;font-weight:600;letter-spacing:.3px;white-space:nowrap}
+thead tr:nth-child(2) th:first-child{text-align:left}
+tbody tr{border-bottom:1px solid var(--n1);transition:background .1s}
+tbody tr:hover{background:var(--g0)}
+tbody tr.grow{background:linear-gradient(90deg,#fffbeb,#fef9ee);font-weight:800;border-top:2px solid var(--a6)}
+tbody tr.grow td{color:#92400e}
+tbody td{padding:8px 10px;text-align:center;color:var(--n7);background:#fff}
+tbody tr.grow td{background:transparent}
+tbody td:first-child{text-align:left;font-weight:700;color:var(--n9);background:#fff}
+tbody tr.grow td:first-child{background:transparent}
+.chip{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap}
+.chip-bl{background:var(--b1);color:var(--b6);border:1px solid #bfdbfe}
+.chip-gn{background:var(--g1);color:var(--g7);border:1px solid #bbf7d0}
+.chip-am{background:var(--a1);color:#92400e;border:1px solid #fde68a}
+.chip-rd{background:var(--r1);color:var(--r6);border:1px solid #fecaca}
+.chip-na{color:var(--n4);font-size:12px}
+/* CHARTS */
+.chart-card{background:#fff;border:1px solid var(--n2);border-radius:var(--rl);padding:22px;box-shadow:var(--shm);margin-bottom:28px}
+.chart-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+.chart-hdr h3{font-size:13px;font-weight:800;color:var(--n7);text-transform:uppercase;letter-spacing:.5px}
+.chart-wrap{position:relative;height:300px}
+/* SIMULADOS TAB */
+.sims-overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-bottom:26px}
+.sov{background:#fff;border:1px solid var(--n2);border-radius:var(--rl);padding:14px;box-shadow:var(--sh)}
+.sov-name{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--n5);margin-bottom:7px}
+.sov-nums{display:flex;align-items:baseline;gap:4px;margin-bottom:5px}
+.sov-proj{font-size:24px;font-weight:900;line-height:1}
+.sov-meta{font-size:11px;color:var(--n4);font-weight:600}
+.sov-chip{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.conc-pills{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:20px}
+.cpill{padding:7px 17px;border-radius:20px;border:1.5px solid var(--n3);background:#fff;
+  color:var(--n5);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.cpill:hover{border-color:var(--g5);color:var(--g7);background:var(--g0)}
+.cpill.on{background:var(--g8);border-color:var(--g8);color:#fff;box-shadow:0 2px 8px rgba(22,101,52,.3)}
+.sim-row{border:1px solid var(--n2);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.sim-row-hdr{background:var(--n0);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--n2)}
+.sim-row-title{font-size:13px;font-weight:800;color:var(--n9)}
+.sim-row-date{font-size:11px;color:var(--n4);margin-top:1px}
+.sim-row-right{display:flex;align-items:center;gap:10px}
+.sim-total{font-size:13px;font-weight:700;color:var(--n7)}
+.sim-row-content{padding:14px 16px}
+.sim-row-footer{background:linear-gradient(135deg,var(--g9),var(--g8));padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sim-row-footer .rf-lbl{font-size:11px;color:rgba(255,255,255,.65);font-weight:600}
+.sim-row-footer .rf-val{font-size:14px;font-weight:900;color:#fff}
+.empty{color:var(--n4);text-align:center;padding:48px;font-size:13px}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){
+  .hdr{padding:0 16px;height:56px}.hdr-logo{height:38px}.hdr h1{font-size:14px}.hdr-pill{display:none}
+  .nav{padding:0 12px}.main{padding:14px 16px}
+  .kpi-row{grid-template-columns:repeat(2,1fr);gap:10px}
+  .cg{grid-template-columns:1fr}.tabs{flex-wrap:wrap}
+  .det-sim-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <img src="logo.jpg" alt="Logo" class="hdr-logo">
+  <div>
+    <h1>Metas de Aprovações — 2026</h1>
+    <p>Acompanhamento por unidade · simulados · projeções</p>
+  </div>
+  <div class="hdr-pill">2026</div>
+</div>
+
+<div class="nav">
+  <span class="nav-lbl">Unidade:</span>
+  <div id="navU" style="display:flex;gap:6px"></div>
+</div>
+
+<div class="main">
+  <div class="tabs">
+    <button class="tb on"  onclick="sw('visao')">Por Unidade</button>
+    <button class="tb"     onclick="sw('geral')">Visão Geral</button>
+    <button class="tb"     onclick="sw('sims')">Simulados 2026</button>
+    <button class="tb"     onclick="sw('chart')">Gráfico</button>
+  </div>
+
+  <div class="view on" id="view-visao">
+    <div id="unitNormal">
+      <div class="kpi-row" id="kpiRow"></div>
+      <div class="slbl" id="secLbl">Concursos</div>
+      <div class="cg" id="cg"></div>
+    </div>
+    <div id="det" class="det" style="display:none"></div>
+  </div>
+
+  <div class="view" id="view-geral">
+    <div class="fil-bar">
+      <label>Concurso:</label>
+      <select class="fil-sel" id="filInst" onchange="renderGeral()">
+        <option value="ALL">Todos</option>
+      </select>
+    </div>
+    <div class="tbl-wrap" id="geralTbl"></div>
+  </div>
+
+  <div class="view" id="view-sims">
+    <div id="simsV"></div>
+  </div>
+
+  <div class="view" id="view-chart">
+    <div class="fil-bar">
+      <label>Concurso:</label>
+      <select class="fil-sel" id="chartInst" onchange="renderChart()"></select>
+    </div>
+    <div class="chart-card">
+      <div class="chart-hdr"><h3 id="chartTitle">Comparativo</h3></div>
+      <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const UNITS=['BG','CG','CX','MD','NI','RM','SJ','TQ','TJ','RT','GERAL'];
+const UN={BG:'Bangu',CG:'Campo Grande',CX:'Caxias',MD:'Madureira',NI:'Nova Iguaçu',
+  RM:'Rocha Miranda',SJ:'São João',TQ:'Taquara',TJ:'Tijuca',RT:'Retiro',GERAL:'Geral'};
+const INSTS=['AFA','EN','EFOMM','EsPCEx','CN','EPCAr'];
+const ALL_INSTS=['EEAr 1','EEAr 2','ESA','AFA','EN','EFOMM','EsPCEx','CN','EPCAr'];
+
+const RAW={
+  BG:{'EEAr 1':{m25:22,a25:25,m26:25},'EEAr 2':{m25:20,a25:42,m26:32},'ESA':{m25:32,a25:42,m26:35},'AFA':{m25:6,a25:5,m26:7},'EN':{m25:2,a25:1,m26:5},'EFOMM':{m25:10,a25:11,m26:16},'EsPCEx':{m25:12,a25:17,m26:15},'CN':{m25:6,a25:3,m26:9},'EPCAr':{m25:18,a25:12,m26:18}},
+  CG:{'EEAr 1':{m25:14,a25:8,m26:8},'EEAr 2':{m25:6,a25:15,m26:15},'ESA':{m25:10,a25:15,m26:13},'AFA':{m25:4,a25:0,m26:4},'EN':{m25:1,a25:1,m26:2},'EFOMM':{m25:6,a25:6,m26:7},'EsPCEx':{m25:10,a25:5,m26:5},'CN':{m25:6,a25:5,m26:8},'EPCAr':{m25:16,a25:14,m26:15}},
+  CX:{'EEAr 1':{m25:3,a25:2,m26:3},'EEAr 2':{m25:4,a25:10,m26:6},'ESA':{m25:4,a25:5,m26:5},'AFA':{m25:0,a25:1,m26:1},'EN':{m25:0,a25:0,m26:0},'EFOMM':{m25:1,a25:4,m26:3},'EsPCEx':{m25:2,a25:2,m26:3},'CN':{m25:2,a25:3,m26:2},'EPCAr':{m25:3,a25:3,m26:4}},
+  MD:{'EEAr 1':{m25:22,a25:18,m26:25},'EEAr 2':{m25:9,a25:22,m26:23},'ESA':{m25:12,a25:15,m26:17},'AFA':{m25:8,a25:9,m26:11},'EN':{m25:3,a25:6,m26:6},'EFOMM':{m25:12,a25:15,m26:20},'EsPCEx':{m25:10,a25:13,m26:12},'CN':{m25:5,a25:5,m26:12},'EPCAr':{m25:12,a25:14,m26:20}},
+  NI:{'EEAr 1':{m25:11,a25:10,m26:11},'EEAr 2':{m25:10,a25:19,m26:15},'ESA':{m25:12,a25:8,m26:9},'AFA':{m25:4,a25:2,m26:4},'EN':{m25:3,a25:2,m26:3},'EFOMM':{m25:7,a25:6,m26:8},'EsPCEx':{m25:6,a25:3,m26:5},'CN':{m25:3,a25:1,m26:2},'EPCAr':{m25:7,a25:8,m26:8}},
+  RM:{'EEAr 1':{m25:5,a25:5,m26:5},'EEAr 2':{m25:6,a25:9,m26:7},'ESA':{m25:6,a25:7,m26:8},'AFA':{m25:0,a25:1,m26:1},'EN':{m25:0,a25:1,m26:1},'EFOMM':{m25:2,a25:2,m26:2},'EsPCEx':{m25:4,a25:5,m26:5},'CN':{m25:1,a25:0,m26:2},'EPCAr':{m25:4,a25:3,m26:4}},
+  SJ:{'EEAr 1':{m25:2,a25:0,m26:0},'EEAr 2':{m25:2,a25:6,m26:3},'ESA':{m25:3,a25:3,m26:3},'AFA':{m25:0,a25:0,m26:0},'EN':{m25:0,a25:0,m26:0},'EFOMM':{m25:0,a25:0,m26:1},'EsPCEx':{m25:2,a25:0,m26:0},'CN':{m25:1,a25:3,m26:3},'EPCAr':{m25:4,a25:3,m26:3}},
+  TQ:{'EEAr 1':{m25:7,a25:6,m26:9},'EEAr 2':{m25:4,a25:12,m26:12},'ESA':{m25:5,a25:10,m26:8},'AFA':{m25:2,a25:0,m26:2},'EN':{m25:0,a25:0,m26:1},'EFOMM':{m25:4,a25:3,m26:4},'EsPCEx':{m25:4,a25:7,m26:5},'CN':{m25:5,a25:4,m26:6},'EPCAr':{m25:8,a25:4,m26:6}},
+  TJ:{'EEAr 1':{m25:2,a25:1,m26:2},'EEAr 2':{m25:2,a25:0,m26:2},'ESA':{m25:2,a25:1,m26:2},'AFA':{m25:null,a25:null,m26:0},'EN':{m25:null,a25:null,m26:0},'EFOMM':{m25:null,a25:null,m26:0},'EsPCEx':{m25:2,a25:0,m26:2},'CN':{m25:0,a25:1,m26:1},'EPCAr':{m25:1,a25:1,m26:2}},
+  RT:{'EEAr 1':{m25:null,a25:null,m26:null},'EEAr 2':{m25:null,a25:null,m26:5},'ESA':{m25:null,a25:null,m26:null},'AFA':{m25:null,a25:null,m26:0},'EN':{m25:null,a25:null,m26:0},'EFOMM':{m25:null,a25:null,m26:0},'EsPCEx':{m25:null,a25:null,m26:2},'CN':{m25:1,a25:1,m26:3},'EPCAr':{m25:1,a25:4,m26:5}},
+  GERAL:{'EEAr 1':{m25:88,a25:75,m26:88},'EEAr 2':{m25:63,a25:135,m26:120},'ESA':{m25:86,a25:106,m26:100},'AFA':{m25:24,a25:17,m26:30},'EN':{m25:9,a25:10,m26:18},'EFOMM':{m25:42,a25:45,m26:61},'EsPCEx':{m25:52,a25:52,m26:54},'CN':{m25:30,a25:26,m26:48},'EPCAr':{m25:74,a25:66,m26:85}},
+};
+
+const SIMS={
+  CN:[
+    {label:'1º Sim',date:'',       BG:7, CG:3,CX:1,MD:13,NI:0,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
+    {label:'2º Sim',date:'21/03',  BG:4, CG:2,CX:1,MD:10,NI:0,RM:1,SJ:0,TQ:0,TJ:0,RT:0},
+  ],
+  EPCAr:[
+    {label:'1º Sim',date:'14/03',  BG:22,CG:13,CX:4,MD:24,NI:6,RM:0,SJ:0,TQ:5,TJ:0,RT:2},
+    {label:'2º Sim',date:'11/04',  BG:4, CG:6, CX:6,MD:17,NI:4,RM:2,SJ:0,TQ:2,TJ:0,RT:1},
+  ],
+  AFA:[
+    {label:'1º Sim',date:'',       BG:3,CG:1,CX:0,MD:0,NI:4,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
+    {label:'2º Sim',date:'',       BG:4,CG:1,CX:0,MD:2,NI:3,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
+  ],
+  EN:[
+    {label:'1º Sim',date:'',       BG:5,CG:0,CX:0,MD:6,NI:4,RM:0,SJ:0,TQ:3,TJ:0,RT:0},
+    {label:'2º Sim',date:'',       BG:1,CG:0,CX:0,MD:1,NI:0,RM:0,SJ:0,TQ:1,TJ:0,RT:0},
+  ],
+  EFOMM:[
+    {label:'1º Sim',date:'',       BG:7,CG:1,CX:0,MD:3,NI:4,RM:0,SJ:0,TQ:7,TJ:0,RT:0},
+    {label:'2º Sim',date:'',       BG:5,CG:2,CX:0,MD:2,NI:8,RM:0,SJ:0,TQ:9,TJ:0,RT:0},
+  ],
+  EsPCEx:[
+    {label:'1º Sim',date:'21/03',  BG:13,CG:3,CX:2,MD:1,NI:2,RM:2,SJ:0,TQ:4,TJ:0,RT:0},
+    {label:'2º Sim',date:'28/03',  BG:6, CG:0,CX:1,MD:0,NI:3,RM:6,SJ:0,TQ:4,TJ:1,RT:0},
+    {label:'3º Sim',date:'11/04',  BG:4, CG:0,CX:1,MD:1,NI:3,RM:4,SJ:0,TQ:3,TJ:1,RT:0},
+  ],
+};
+
+const NG=UNITS.filter(u=>u!=='GERAL');
+let aUnit='GERAL',aView='visao',aInst=null,aSimInst=null,mainChart=null,simChart=null,detChart=null;
+
+function pctCol(p){return p>=100?'#16a34a':p>=70?'#d97706':'#60a5fa';}
+function proj(unit,inst){
+  const s=SIMS[inst];if(!s||!s.length)return null;
+  if(unit==='GERAL'){const t=s.map(x=>NG.reduce((a,u)=>a+(x[u]||0),0));return Math.round(t.reduce((a,b)=>a+b)/t.length);}
+  return Math.round(s.reduce((a,x)=>a+(x[unit]||0),0)/s.length);
+}
+function simVal(sim,unit){
+  return unit==='GERAL'?NG.reduce((a,u)=>a+(sim[u]||0),0):(sim[unit]||0);
+}
+
+function init(){
+  const nav=document.getElementById('navU');
+  UNITS.forEach(u=>{
+    const b=document.createElement('button');
+    b.className='nb'+(u===aUnit?' on':'');
+    b.textContent=UN[u];b.onclick=()=>selUnit(u);nav.appendChild(b);
+  });
+  ALL_INSTS.forEach(i=>{
+    document.getElementById('filInst').innerHTML+=`<option value="${i}">${i}</option>`;
+    document.getElementById('chartInst').innerHTML+=`<option value="${i}">${i}</option>`;
+  });
+  renderUnit();renderGeral();renderChart();renderSims();
+}
+
+function selUnit(u){
+  aUnit=u;aInst=null;
+  document.querySelectorAll('.nb').forEach(b=>b.classList.toggle('on',b.textContent===UN[u]));
+  closeDetail(false);
+  if(aView==='visao') renderUnit();
+}
+
+function sw(v){
+  aView=v;
+  document.querySelectorAll('.view').forEach(el=>el.classList.remove('on'));
+  document.getElementById('view-'+v).classList.add('on');
+  document.querySelectorAll('.tb').forEach((t,i)=>
+    t.classList.toggle('on',['visao','geral','sims','chart'][i]===v));
+  if(v==='chart') renderChart();
+  if(v==='geral') renderGeral();
+  if(v==='sims')  renderSims();
+}
+
+// ── TAB 1 — POR UNIDADE ──
+function renderUnit(){
+  const u=aUnit,d=RAW[u];
+  const vis=u==='GERAL'?INSTS:INSTS.filter(i=>d[i].m26!==null);
+  const tM26=vis.reduce((s,i)=>s+(d[i].m26||0),0);
+  const tA25=vis.reduce((s,i)=>s+(d[i].a25||0),0);
+  const tM25=vis.reduce((s,i)=>s+(d[i].m25||0),0);
+  const tPrj=vis.reduce((s,i)=>{const p=proj(u,i);return s+(p||0);},0);
+  const pct=tM26>0?Math.min(100,Math.round(tPrj/tM26*100)):0;
+  const dM=tM26-tM25;
+  const pCls=pct>=100?'gn':pct>=70?'am':tPrj>0?'rd':'gy';
+  const dCls=dM>0?'gn':dM<0?'rd':'gy';
+
+  document.getElementById('kpiRow').innerHTML=`
+    <div class="kpi bl"><div class="kpi-bar"></div><div class="kpi-body">
+      <div class="kpi-ico">🎯</div><div class="kpi-n">${tM26}</div>
+      <div class="kpi-lbl">Meta 2026</div><div class="kpi-sub">aprovações previstas</div></div></div>
+    <div class="kpi ${pCls}"><div class="kpi-bar"></div><div class="kpi-body">
+      <div class="kpi-ico">📊</div><div class="kpi-n">${tPrj}</div>
+      <div class="kpi-lbl">Projeção</div><div class="kpi-sub">${pct}% da meta (simulados)</div></div></div>
+    <div class="kpi gy"><div class="kpi-bar"></div><div class="kpi-body">
+      <div class="kpi-ico">📋</div><div class="kpi-n">${tA25}</div>
+      <div class="kpi-lbl">Realizado 2025</div><div class="kpi-sub">aprovações no ano passado</div></div></div>
+    <div class="kpi ${dCls}"><div class="kpi-bar"></div><div class="kpi-body">
+      <div class="kpi-ico">${dM>=0?'⬆':'⬇'}</div><div class="kpi-n">${dM>0?'+':''}${dM}</div>
+      <div class="kpi-lbl">Δ Meta 25→26</div><div class="kpi-sub">variação da meta</div></div></div>`;
+
+  document.getElementById('secLbl').textContent=`Concursos com simulados — ${UN[u]}`;
+
+  document.getElementById('cg').innerHTML=vis.map(inst=>{
+    const r=d[inst],m26=r.m26,p=proj(u,inst),a25=r.a25;
+    const pct2=m26&&m26>0&&p?Math.min(100,Math.round(p/m26*100)):0;
+    const bar=pct2>=100?'bar-gn':pct2>=70?'bar-am':'bar-rd';
+    const bgeCls=pct2>=100?'bge-gn':pct2>=70?'bge-am':'bge-rd';
+    const bgeTxt=pct2>=100?'✓ Na meta':pct2>=70?`${pct2}% — Próximo`:`${pct2}% — Abaixo`;
+    const pjCol=pct2>=100?'lv-gn':pct2>=70?'lv-am':'lv-rd';
+    const pc=pctCol(pct2);
+    const nsim=SIMS[inst]?SIMS[inst].length:0;
+    return `<div class="cc" onclick="openDetail('${inst}')">
+      <div class="cc-bar ${bar}"></div>
+      <div class="cc-body">
+        <div class="cc-head">
+          <span class="cc-name">${inst}</span>
+          <span class="bge ${bgeCls}">${bgeTxt}</span>
+        </div>
+        <div class="cc-nums">
+          <div class="cc-num"><div class="ln">Meta 26</div><div class="lv lv-bl">${m26??'—'}</div></div>
+          <div class="cc-num"><div class="ln">Projeção</div><div class="lv ${pjCol}">${p??'—'}</div></div>
+          <div class="cc-num"><div class="ln">APV 2025</div><div class="lv lv-gy">${a25??'—'}</div></div>
+        </div>
+        <div class="cc-prog"><div class="cc-prog-f" style="width:${pct2}%;background:${pc}"></div></div>
+        <div class="cc-hint">${pct2}% da meta · ${nsim} simulado${nsim!==1?'s':''} · ver dashboard →</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openDetail(inst){
+  aInst=inst;
+  document.getElementById('unitNormal').style.display='none';
+  renderDetail();
+  document.getElementById('det').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function closeDetail(rerender=true){
+  aInst=null;
+  if(detChart){detChart.destroy();detChart=null;}
+  document.getElementById('det').style.display='none';
+  document.getElementById('unitNormal').style.display='block';
+  if(rerender) renderUnit();
+}
+
+function renderDetail(){
+  const inst=aInst,u=aUnit,d=RAW[u][inst];
+  const m26=d.m26,a25=d.a25;
+  const sims=SIMS[inst];
+  const p=proj(u,inst);
+  const fp=m26&&m26>0&&p?Math.round(p/m26*100):0;
+  const pCls=fp>=100?'gn':fp>=70?'am':p?'rd':'gy';
+  const bgeCls=fp>=100?'bge-gn':fp>=70?'bge-am':p?'bge-rd':'bge-gy';
+  const bgeTxt=fp>=100?'✓ Na meta':fp>=70?fp+'% — Próximo':p?fp+'% — Abaixo':'Sem projeção';
+
+  let simHtml='';
+  if(!sims||!sims.length){
+    simHtml=`<div class="det-no-sim">Nenhum simulado registrado para <strong>${inst}</strong> ainda.<br>
+      <span style="font-size:12px;color:var(--n4);margin-top:6px;display:block">Meta 2026: ${m26??'—'} · APV. 2025: ${a25??'—'}</span></div>`;
+  } else {
+    const cards=sims.map((sim,idx)=>{
+      const v=simVal(sim,u);
+      const prev=idx>0?simVal(sims[idx-1],u):null;
+      const diff=prev!==null?v-prev:null;
+      const trendHtml=diff===null?'':
+        diff>0?`<span class="sim-trend-up">▲ +${diff}</span>`:
+        diff<0?`<span class="sim-trend-dn">▼ ${diff}</span>`:
+        `<span style="color:var(--n4);font-size:11px">= sem alteração</span>`;
+
+      let barsHtml='';
+      if(u==='GERAL'){
+        const uList=NG.filter(uu=>(sim[uu]||0)>0||(RAW[uu][inst]?.m26>0));
+        const maxV=Math.max(...uList.map(uu=>sim[uu]||0),1);
+        barsHtml=uList.map(uu=>{
+          const uv=sim[uu]||0,um=RAW[uu][inst]?.m26;
+          const rp=um&&um>0?Math.round(uv/um*100):0;
+          const bc=pctCol(rp);
+          return `<div class="sim-bar-row">
+            <span class="sim-bar-lbl">${UN[uu]}</span>
+            <div class="sim-bar-track"><div class="sim-bar-fill" style="width:${Math.round(uv/maxV*100)}%;background:${bc}">
+              <span class="sim-bar-val">${uv}</span></div></div>
+            <span class="sim-bar-meta">${um!=null?uv+'/'+um:'—'}</span>
+            <span class="sim-bar-pct" style="color:${bc}">${um!=null?rp+'%':''}</span>
+          </div>`;
+        }).join('');
+      } else {
+        const rp=m26&&m26>0?Math.round(v/m26*100):0;
+        const bc=pctCol(rp);
+        barsHtml=`<div class="sim-bar-row">
+          <span class="sim-bar-lbl">${UN[u]}</span>
+          <div class="sim-bar-track"><div class="sim-bar-fill" style="width:${Math.min(100,rp)}%;background:${bc}">
+            <span class="sim-bar-val">${v}</span></div></div>
+          <span class="sim-bar-meta">${m26!=null?v+'/'+m26:'—'}</span>
+          <span class="sim-bar-pct" style="color:${bc}">${m26!=null?rp+'%':''}</span>
+        </div>`;
+      }
+
+      const cumV=sims.slice(0,idx+1).map(s=>simVal(s,u));
+      const cumAvg=parseFloat((cumV.reduce((a,b)=>a+b)/cumV.length).toFixed(1));
+      const cumPct=m26&&m26>0?Math.round(cumAvg/m26*100):0;
+
+      return `<div class="det-sim-card">
+        <div class="det-sim-hdr">
+          <div>
+            <div class="det-sim-title">${sim.label}${sim.date?' — '+sim.date:''}</div>
+            <div class="det-sim-sub">${idx===0?'Primeiro simulado registrado':'vs simulado anterior'}</div>
+          </div>
+          <div class="det-sim-right">
+            <span class="det-sim-total">${v}</span>
+            ${trendHtml}
+          </div>
+        </div>
+        <div class="det-sim-body">
+          <div class="det-sim-section">Resultado vs Meta 2026</div>
+          ${barsHtml}
+        </div>
+        <div class="det-sim-footer">
+          <span class="sf-lbl">Projeção acumulada${sims.length>1?' ('+Array.from({length:idx+1},(_,i)=>i+1+'°').join('+')+ ' sim.)':''}</span>
+          <span class="sf-val">${cumAvg} <span style="color:${pctCol(cumPct)};font-weight:900">${cumPct}%</span></span>
+        </div>
+      </div>`;
+    }).join('');
+
+    let projHtml='';
+    if(p!==null&&m26){
+      const bc=pctCol(fp);
+      projHtml=`<div class="proj-row">
+        <div class="proj-row-hdr">
+          <span class="proj-row-title">Projeção Final — média de ${sims.length} simulado${sims.length>1?'s':''}</span>
+          <span class="proj-row-total">${p} / ${m26} (${fp}%)</span>
+        </div>
+        <div class="proj-row-content">
+          <div class="sim-bar-row">
+            <span class="sim-bar-lbl">Projeção</span>
+            <div class="sim-bar-track"><div class="sim-bar-fill" style="width:${Math.min(100,fp)}%;background:${bc}">
+              <span class="sim-bar-val">${p}</span></div></div>
+            <span class="sim-bar-meta">${p}/${m26}</span>
+            <span class="sim-bar-pct" style="color:${bc}">${fp}%${fp>=100?' ✓':''}</span>
+          </div>
+          <div style="font-size:11px;color:var(--n5);margin-top:8px">
+            ${fp>=100?'✅ Projeção acima da meta!':fp>=70?`⚠️ Faltam ${m26-p} aprovações para atingir a meta.`:`❌ Faltam ${m26-p} aprovações — projeção abaixo da meta.`}
+          </div>
+        </div>
+      </div>`;
+    }
+    simHtml=`<div class="det-sim-grid">${cards}</div>${projHtml}`;
+  }
+
+  const showChart=sims&&sims.length>=2;
+  document.getElementById('det').innerHTML=`
+    <div class="det-back" onclick="closeDetail()">← Voltar para Concursos — ${UN[u]}</div>
+    <div class="det-title-row">
+      <div>
+        <div style="font-size:22px;font-weight:900;color:var(--n9);letter-spacing:-.5px">${inst}</div>
+        <div style="font-size:12px;color:var(--n5);margin-top:3px">${UN[u]} · Meta 2026: <b>${m26??'—'}</b> · APV. 2025: <b>${a25??'—'}</b> · ${sims?sims.length:0} simulado${sims?.length!==1?'s':''}</div>
+      </div>
+      <span class="bge ${bgeCls}" style="font-size:12px;padding:6px 16px">${bgeTxt}</span>
+    </div>
+    <div class="kpi-row" style="margin-top:18px;margin-bottom:24px">
+      <div class="kpi bl"><div class="kpi-bar"></div><div class="kpi-body">
+        <div class="kpi-ico">🎯</div><div class="kpi-n">${m26??'—'}</div>
+        <div class="kpi-lbl">Meta 2026</div><div class="kpi-sub">aprovações previstas</div></div></div>
+      <div class="kpi ${pCls}"><div class="kpi-bar"></div><div class="kpi-body">
+        <div class="kpi-ico">📊</div><div class="kpi-n">${p??'—'}</div>
+        <div class="kpi-lbl">Projeção</div><div class="kpi-sub">${fp}% da meta</div></div></div>
+      <div class="kpi gy"><div class="kpi-bar"></div><div class="kpi-body">
+        <div class="kpi-ico">📋</div><div class="kpi-n">${a25??'—'}</div>
+        <div class="kpi-lbl">APV. 2025</div><div class="kpi-sub">ano anterior</div></div></div>
+      <div class="kpi gy"><div class="kpi-bar"></div><div class="kpi-body">
+        <div class="kpi-ico">🧪</div><div class="kpi-n">${sims?sims.length:0}</div>
+        <div class="kpi-lbl">Simulados</div><div class="kpi-sub">realizados</div></div></div>
+    </div>
+    <div class="slbl">Simulados</div>
+    ${simHtml}
+    ${showChart?`
+    <div class="slbl" style="margin-top:24px">Evolução por Simulado</div>
+    <div class="chart-card">
+      <div class="chart-hdr"><h3>${inst} — ${UN[u]}</h3></div>
+      <div class="chart-wrap" style="height:260px"><canvas id="detChart"></canvas></div>
+    </div>`:''}`;
+
+  if(showChart) setTimeout(()=>renderDetChart(inst,u),50);
+}
+
+function renderDetChart(inst,u){
+  const sims=SIMS[inst];if(!sims||sims.length<2)return;
+  const ctx=document.getElementById('detChart');if(!ctx)return;
+  if(detChart){detChart.destroy();detChart=null;}
+  const labels=sims.map(s=>s.label+(s.date?' ('+s.date+')':''));
+
+  if(u==='GERAL'){
+    const au=NG.filter(uu=>sims.some(s=>(s[uu]||0)>0));
+    const cols=['#2563eb','#16a34a','#d97706','#dc2626','#7c3aed','#0891b2','#be185d','#65a30d','#c2410c','#0f766e'];
+    detChart=new Chart(ctx,{type:'bar',data:{labels,datasets:au.map((uu,i)=>({
+      label:UN[uu],data:sims.map(s=>s[uu]||0),
+      backgroundColor:cols[i%cols.length]+'99',borderColor:cols[i%cols.length],borderWidth:1.5,borderRadius:3
+    }))},options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12,usePointStyle:true}}},
+      scales:{x:{ticks:{font:{size:11,weight:'bold'}}},y:{beginAtZero:true,ticks:{stepSize:1},
+        title:{display:true,text:'Aprovações',color:'#6b7280',font:{size:11}}}}}});
+  } else {
+    const vals=sims.map(s=>simVal(s,u));
+    const m26=RAW[u][inst].m26;
+    const ds=[{label:'Resultado',data:vals,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.12)',
+      fill:true,tension:.3,pointRadius:6,pointBackgroundColor:'#2563eb',borderWidth:2.5}];
+    if(m26&&m26>0) ds.push({label:'Meta 2026',data:sims.map(()=>m26),borderColor:'#16a34a',
+      borderDash:[6,4],borderWidth:2,pointRadius:0,fill:false,tension:0});
+    detChart=new Chart(ctx,{type:'line',data:{labels,datasets:ds},options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11},padding:12,usePointStyle:true}}},
+      scales:{x:{ticks:{font:{size:11,weight:'bold'}}},y:{beginAtZero:true,
+        suggestedMax:m26?Math.ceil(m26*1.4):undefined,ticks:{stepSize:1},
+        title:{display:true,text:'Aprovações',color:'#6b7280',font:{size:11}}}}}});
+  }
+}
+
+// ── TAB 2 — VISÃO GERAL ──
+function renderGeral(){
+  const sel=document.getElementById('filInst').value;
+  const ins=sel==='ALL'?ALL_INSTS:[sel];
+  let h=`<table><thead><tr><th>Unidade</th>${ins.map(i=>`<th colspan="3">${i}</th>`).join('')}</tr>
+    <tr><th></th>${ins.map(()=>'<th>Meta 26</th><th>APV. 25</th><th>Projeção</th>').join('')}</tr>
+  </thead><tbody>`;
+  UNITS.forEach(u=>{
+    const isG=u==='GERAL';
+    h+=`<tr class="${isG?'grow':''}"><td>${UN[u]}</td>`;
+    ins.forEach(inst=>{
+      const r=RAW[u][inst],m26=r.m26,a25=r.a25,p=proj(u,inst);
+      const pct=m26&&m26>0&&p?Math.round(p/m26*100):0;
+      const cls=p===null?'chip-na':pct>=100?'chip-gn':pct>=70?'chip-am':'chip-rd';
+      h+=`<td>${m26!==null?`<span class="chip chip-bl">${m26}</span>`:'<span class="chip-na">—</span>'}</td>`;
+      h+=`<td style="color:var(--n5)">${a25!==null?a25:'—'}</td>`;
+      h+=`<td>${m26!==null&&p!==null?`<span class="chip ${cls}">${p}</span>`:'<span class="chip-na">—</span>'}</td>`;
+    });
+    h+='</tr>';
+  });
+  h+='</tbody></table>';
+  document.getElementById('geralTbl').innerHTML=h;
+}
+
+// ── TAB 3 — SIMULADOS ──
+function renderSims(){
+  const c=document.getElementById('simsV');
+  const ws=INSTS.filter(i=>SIMS[i]&&SIMS[i].length>0);
+  if(!ws.length){c.innerHTML='<div class="empty">Nenhum simulado registrado ainda.</div>';return;}
+  if(!aSimInst||!ws.includes(aSimInst)) aSimInst=ws[0];
+
+  const ovCards=ws.map(i=>{
+    const p=proj('GERAL',i),m=RAW.GERAL[i].m26;
+    const pct=m&&m>0&&p?Math.round(p/m*100):0;
+    const col=pctCol(pct);
+    const chipCls=pct>=100?'chip-gn':pct>=70?'chip-am':'chip-rd';
+    return `<div class="sov"><div class="sov-name">${i}</div>
+      <div class="sov-nums"><span class="sov-proj" style="color:${col}">${p??'—'}</span><span class="sov-meta">/ ${m??'—'}</span></div>
+      <span class="sov-chip chip ${chipCls}">${pct}% da meta</span></div>`;
+  }).join('');
+
+  const pills=ws.map(i=>
+    `<button class="cpill${i===aSimInst?' on':''}" onclick="selSim('${i}')">${i}</button>`
+  ).join('');
+
+  c.innerHTML=`
+    <div class="slbl">Projeção Geral — Média dos Simulados</div>
+    <div class="sims-overview">${ovCards}</div>
+    <div class="slbl">Detalhe por Concurso</div>
+    <div class="conc-pills">${pills}</div>
+    <div id="simDetail">${buildSimDetail(aSimInst)}</div>
+    <div class="chart-card" style="margin-top:20px">
+      <div class="chart-hdr"><h3 id="simChartTitle">${aSimInst} — Desempenho por Unidade</h3></div>
+      <div class="chart-wrap"><canvas id="simChart"></canvas></div>
+    </div>`;
+  renderSimChart(aSimInst);
+}
+
+function selSim(inst){
+  aSimInst=inst;
+  document.querySelectorAll('.cpill').forEach(b=>b.classList.toggle('on',b.textContent===inst));
+  document.getElementById('simDetail').innerHTML=buildSimDetail(inst);
+  document.getElementById('simChartTitle').textContent=`${inst} — Desempenho por Unidade`;
+  renderSimChart(inst);
+}
+
+function buildSimDetail(inst){
+  const sims=SIMS[inst];
+  if(!sims||!sims.length) return '<div class="empty">Sem dados de simulado.</div>';
+  const BAR=['#15803d','#16a34a','#22c55e','#4ade80'];
+  return '<div style="display:flex;flex-direction:column;gap:18px;margin-bottom:20px">'+
+  sims.map((sim,idx)=>{
+    const prevSim=idx>0?sims[idx-1]:null;
+    const units=[...NG].filter(u=>(sim[u]||0)>0).sort((a,b)=>(sim[b]||0)-(sim[a]||0));
+    const total=units.reduce((s,u)=>s+(sim[u]||0),0);
+    const maxV=units.length?(sim[units[0]]||1):1;
+    const cumVals=sims.slice(0,idx+1).map(s=>NG.reduce((a,u)=>a+(s[u]||0),0));
+    const cumAvg=Math.round(cumVals.reduce((a,b)=>a+b)/cumVals.length);
+    const prevTotal=prevSim?NG.reduce((a,u)=>a+(prevSim[u]||0),0):null;
+    const diff=prevTotal!==null?total-prevTotal:null;
+    const trendHtml=diff===null?'':diff>0?`<span class="sim-trend-up">▲ +${diff}</span>`:
+      diff<0?`<span class="sim-trend-dn">▼ ${diff}</span>`:`<span style="color:var(--n4);font-size:11px">sem alteração</span>`;
+    const resRows=units.map((u,ri)=>{
+      const v=sim[u]||0,bw=Math.round(v/maxV*100);
+      const pv=prevSim?(prevSim[u]||0):null,d=pv!==null?v-pv:null;
+      const dHtml=d===null?'':d>0?`<span class="sim-trend-up">+${d}↑</span>`:d<0?`<span class="sim-trend-dn">${d}↓</span>`:`<span style="color:var(--n4);font-size:10px">→</span>`;
+      return `<div class="sim-bar-row">
+        <span class="sim-bar-lbl">${UN[u]}</span>
+        <div class="sim-bar-track"><div class="sim-bar-fill" style="width:${bw}%;background:${BAR[Math.min(ri,3)]}"><span class="sim-bar-val">${v}</span></div></div>
+        <span style="width:44px;text-align:right;font-size:11px;font-weight:700;color:var(--n5)">${dHtml}</span>
+      </div>`;
+    }).join('');
+    const cmpRows=units.filter(u=>RAW[u]?.[inst]?.m26!=null&&RAW[u][inst].m26>0).map(u=>{
+      const v=sim[u]||0,meta=RAW[u][inst].m26;
+      const rp=Math.round(v/meta*100);
+      const bc=pctCol(rp),pc=rp>=100?'var(--g6)':rp>=70?'var(--a6)':'var(--n5)';
+      return `<div class="sim-bar-row">
+        <span class="sim-bar-lbl">${UN[u]}</span>
+        <div class="sim-bar-track"><div class="sim-bar-fill" style="width:${Math.min(100,rp)}%;background:${bc}"></div></div>
+        <span class="sim-bar-meta">${v}/${meta}</span>
+        <span class="sim-bar-pct" style="color:${pc}">${rp}%${rp>=100?' ✓':''}</span>
+      </div>`;
+    }).join('');
+    return `<div class="sim-row">
+      <div class="sim-row-hdr">
+        <div><div class="sim-row-title">${sim.label}${sim.date?' — '+sim.date:''}</div>
+          <div class="sim-row-date">${inst}${idx>0?' · comparação com simulado anterior':''}</div></div>
+        <div class="sim-row-right"><span class="sim-total">${total} aprovados</span>${trendHtml}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--n2)">
+        <div class="sim-row-content" style="border-right:1px solid var(--n1)">
+          <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--n4);margin-bottom:12px">Resultado${idx>0?' vs Anterior':''}</div>
+          ${resRows||'<span style="color:var(--n4);font-size:12px">Sem dados</span>'}
+        </div>
+        <div class="sim-row-content">
+          <div style="font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.7px;color:var(--n4);margin-bottom:12px">Comparação com Meta 2026</div>
+          ${cmpRows||'<span style="color:var(--n4);font-size:12px">Sem dados</span>'}
+        </div>
+      </div>
+      <div class="sim-row-footer">
+        <span class="rf-lbl">${idx===0?'Projeção se mantiver este ritmo':`Projeção acumulada (${Array.from({length:idx+1},(_,i)=>i+1+'°').join('+')} sim.)`}</span>
+        <span class="rf-val">${cumAvg} aprovados</span>
+      </div>
+    </div>`;
+  }).join('')+'</div>';
+}
+
+function renderSimChart(inst){
+  const sims=SIMS[inst];if(!sims)return;
+  const au=NG.filter(u=>sims.some(s=>(s[u]||0)>0));
+  const cols=['rgba(37,99,235,.7)','rgba(22,163,74,.7)','rgba(217,119,6,.7)'];
+  const brd=['#2563eb','#16a34a','#d97706'];
+  const ds=sims.map((s,i)=>({
+    label:s.label+(s.date?' ('+s.date+')':''),data:au.map(u=>s[u]||0),
+    backgroundColor:cols[i%3],borderColor:brd[i%3],borderWidth:1.5,borderRadius:4
+  }));
+  const avg=au.map(u=>parseFloat((sims.reduce((a,s)=>a+(s[u]||0),0)/sims.length).toFixed(1)));
+  ds.push({label:'Projeção (média)',data:avg,type:'line',borderColor:'#dc2626',
+    backgroundColor:'rgba(220,38,38,.08)',borderWidth:2,borderDash:[5,4],
+    pointBackgroundColor:'#dc2626',pointRadius:4,fill:false,tension:.3,order:0});
+  const ctx=document.getElementById('simChart');
+  if(simChart){simChart.destroy();simChart=null;}
+  simChart=new Chart(ctx,{type:'bar',data:{labels:au.map(u=>UN[u]),datasets:ds},options:{
+    responsive:true,maintainAspectRatio:false,
+    scales:{x:{ticks:{color:'#374151',font:{size:11,weight:'bold'}},grid:{color:'rgba(0,0,0,.04)'}},
+      y:{ticks:{color:'#374151',stepSize:1},grid:{color:'rgba(0,0,0,.06)'},title:{display:true,text:'Aprovações',color:'#6b7280',font:{size:11}}}},
+    plugins:{legend:{position:'bottom',labels:{color:'#374151',font:{size:11,weight:'bold'},padding:14,usePointStyle:true}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}`}}}}});
+}
+
+// ── TAB 4 — GRÁFICO ──
+function renderChart(){
+  const inst=document.getElementById('chartInst').value;
+  const us=UNITS.filter(u=>u!=='GERAL');
+  document.getElementById('chartTitle').textContent=`${inst} — Meta 2025 / APV. 2025 / Meta 2026 / Projeção 2026`;
+  const ctx=document.getElementById('mainChart');
+  if(mainChart){mainChart.destroy();mainChart=null;}
+  mainChart=new Chart(ctx,{type:'bar',data:{labels:us.map(u=>UN[u]),datasets:[
+    {label:'Meta 2025',  data:us.map(u=>RAW[u][inst].m25||0),backgroundColor:'rgba(187,247,208,.7)',borderColor:'#22c55e',borderWidth:1.5,borderRadius:4},
+    {label:'APV. 2025', data:us.map(u=>RAW[u][inst].a25||0),backgroundColor:'rgba(22,163,74,.6)', borderColor:'#16a34a',borderWidth:1.5,borderRadius:4},
+    {label:'Meta 2026', data:us.map(u=>RAW[u][inst].m26||0),backgroundColor:'rgba(37,99,235,.55)',borderColor:'#2563eb',borderWidth:1.5,borderRadius:4},
+    {label:'Projeção 26',data:us.map(u=>proj(u,inst)||0),   backgroundColor:'rgba(217,119,6,.6)', borderColor:'#d97706',borderWidth:1.5,borderRadius:4},
+  ]},options:{responsive:true,maintainAspectRatio:false,
+    scales:{x:{ticks:{color:'#374151',font:{size:11,weight:'bold'}},grid:{color:'rgba(0,0,0,.04)'}},
+      y:{ticks:{color:'#374151',stepSize:1},grid:{color:'rgba(0,0,0,.06)'},title:{display:true,text:'Aprovações',color:'#6b7280',font:{size:11}}}},
+    plugins:{legend:{position:'bottom',labels:{color:'#374151',font:{size:11,weight:'bold'},padding:16,usePointStyle:true}},
+      tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}`}}}}});
+}
+
+init();
+</script>
+</body>
+</html>
