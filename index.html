@@ -177,6 +177,44 @@ tbody tr.grow td:first-child{background:transparent}
 .sim-row-footer .rf-val{font-size:14px;font-weight:900;color:#fff}
 .empty{color:var(--n4);text-align:center;padding:48px;font-size:13px}
 @media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+/* ── E se? Calculator ── */
+.ws-card{background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5px solid #bfdbfe;border-radius:var(--rl);padding:20px 22px;margin-top:4px}
+.ws-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.ws-title{font-size:13px;font-weight:700;color:#1e40af;line-height:1.5;flex:1}
+.ws-title strong{font-size:22px;font-weight:900;display:inline-block;min-width:36px;text-align:center;color:#1d4ed8}
+.ws-badge{font-size:10px;font-weight:700;background:#dbeafe;color:#1d4ed8;border:1px solid #bfdbfe;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.ws-slider{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:#e5e7eb;border-radius:3px;outline:none;cursor:pointer;margin-bottom:6px;transition:background .1s}
+.ws-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;background:#2563eb;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(37,99,235,.35);cursor:pointer}
+.ws-slider::-moz-range-thumb{width:22px;height:22px;background:#2563eb;border-radius:50%;border:3px solid #fff;box-shadow:0 2px 6px rgba(37,99,235,.35);cursor:pointer}
+.ws-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--n4);font-weight:600;margin-bottom:16px}
+.ws-result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:12px}
+.ws-result-item{background:#fff;border-radius:10px;padding:11px;text-align:center;border:1px solid #e5e7eb;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.ws-ri-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--n4);margin-bottom:5px}
+.ws-ri-val{font-size:26px;font-weight:900;line-height:1;transition:color .2s}
+.ws-msg{font-size:12px;font-weight:700;padding:9px 13px;border-radius:8px;border:1px solid #e5e7eb;background:#f8fafc;transition:all .2s}
+/* ── Ranking de Unidades ── */
+.rank-filter-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap}
+.rank-filter-bar label{font-size:12px;font-weight:700;color:var(--n5)}
+.rank-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.rank-kpi{background:#fff;border-radius:var(--r);padding:14px;text-align:center;border:1px solid var(--n2);box-shadow:var(--sh)}
+.rank-kpi .rk-n{font-size:30px;font-weight:900;line-height:1;margin-bottom:4px}
+.rank-kpi .rk-l{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--n5)}
+.rank-list{display:flex;flex-direction:column;gap:10px}
+.rank-row{background:#fff;border:1.5px solid var(--n2);border-radius:var(--rl);padding:14px 16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all .18s;box-shadow:var(--sh)}
+.rank-row:hover{box-shadow:var(--shl);transform:translateY(-1px);border-color:var(--g5)}
+.rank-row.rank-top{border-color:#fde68a;background:linear-gradient(90deg,#fffbeb,#fff)}
+.rank-row.rank-na{cursor:default;opacity:.6}.rank-row.rank-na:hover{transform:none;box-shadow:var(--sh);border-color:var(--n2)}
+.rank-pos{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;font-weight:900;flex-shrink:0}
+.rank-body{flex:1;min-width:0}
+.rank-name-row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px;flex-wrap:wrap}
+.rank-name{font-size:15px;font-weight:800;color:var(--n9)}
+.rank-prog-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.rank-prog-track{flex:1;background:var(--n1);border-radius:99px;height:8px;overflow:hidden}
+.rank-prog-fill{height:100%;border-radius:99px;transition:width .4s ease}
+.rank-pct{font-size:13px;font-weight:900;width:44px;text-align:right;flex-shrink:0}
+.rank-nums{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--n5)}
+.rank-nums b{color:var(--n7)}
+@media(max-width:640px){.ws-result-grid{grid-template-columns:repeat(2,1fr)}.rank-summary{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:640px){
   .hdr{padding:0 16px;height:56px}.hdr-logo{height:38px}.hdr h1{font-size:14px}.hdr-pill{display:none}
   .nav{padding:0 12px}.main{padding:14px 16px}
@@ -243,6 +281,8 @@ tbody tr.grow td:first-child{background:transparent}
       <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
     </div>
   </div>
+
+
 </div>
 
 <script>
@@ -268,29 +308,29 @@ const RAW={
 
 const SIMS={
   CN:[
-    {label:'1º Sim',date:'',       BG:7, CG:3,CX:1,MD:13,NI:0,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
-    {label:'2º Sim',date:'21/03',  BG:4, CG:2,CX:1,MD:10,NI:0,RM:1,SJ:0,TQ:0,TJ:0,RT:0},
+    {label:'1º Sim',date:'',       BG:7, CG:3,CX:1,MD:15,NI:0,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
+    {label:'2º Sim',date:'21/03',  BG:4, CG:2,CX:1,MD:12,NI:0,RM:1,SJ:0,TQ:0,TJ:0,RT:0},
   ],
   EPCAr:[
-    {label:'1º Sim',date:'14/03',  BG:22,CG:13,CX:4,MD:24,NI:6,RM:0,SJ:0,TQ:5,TJ:0,RT:2},
-    {label:'2º Sim',date:'11/04',  BG:4, CG:6, CX:6,MD:17,NI:4,RM:2,SJ:0,TQ:2,TJ:0,RT:1},
+    {label:'1º Sim',date:'14/03',  BG:22,CG:13,CX:4,MD:26,NI:6,RM:0,SJ:0,TQ:5,TJ:0,RT:2},
+    {label:'2º Sim',date:'11/04',  BG:4, CG:6, CX:6,MD:19,NI:4,RM:2,SJ:0,TQ:2,TJ:0,RT:1},
   ],
   AFA:[
-    {label:'1º Sim',date:'',       BG:3,CG:1,CX:0,MD:0,NI:4,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
-    {label:'2º Sim',date:'',       BG:4,CG:1,CX:0,MD:2,NI:3,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
+    {label:'1º Sim',date:'',       BG:4,CG:1,CX:0,MD:1,NI:4,RM:0,SJ:0,TQ:3,TJ:0,RT:0},
+    {label:'2º Sim',date:'',       BG:5,CG:1,CX:0,MD:3,NI:3,RM:0,SJ:0,TQ:3,TJ:0,RT:0},
   ],
   EN:[
-    {label:'1º Sim',date:'',       BG:5,CG:0,CX:0,MD:6,NI:4,RM:0,SJ:0,TQ:3,TJ:0,RT:0},
-    {label:'2º Sim',date:'',       BG:1,CG:0,CX:0,MD:1,NI:0,RM:0,SJ:0,TQ:1,TJ:0,RT:0},
+    {label:'1º Sim',date:'',       BG:6,CG:0,CX:0,MD:7,NI:4,RM:0,SJ:0,TQ:4,TJ:0,RT:0},
+    {label:'2º Sim',date:'',       BG:2,CG:0,CX:0,MD:2,NI:0,RM:0,SJ:0,TQ:2,TJ:0,RT:0},
   ],
   EFOMM:[
-    {label:'1º Sim',date:'',       BG:7,CG:1,CX:0,MD:3,NI:4,RM:0,SJ:0,TQ:7,TJ:0,RT:0},
-    {label:'2º Sim',date:'',       BG:5,CG:2,CX:0,MD:2,NI:8,RM:0,SJ:0,TQ:9,TJ:0,RT:0},
+    {label:'1º Sim',date:'',       BG:8,CG:1,CX:0,MD:4,NI:4,RM:0,SJ:0,TQ:8,TJ:0,RT:0},
+    {label:'2º Sim',date:'',       BG:6,CG:2,CX:0,MD:3,NI:8,RM:0,SJ:0,TQ:10,TJ:0,RT:0},
   ],
   EsPCEx:[
-    {label:'1º Sim',date:'21/03',  BG:13,CG:3,CX:2,MD:1,NI:2,RM:2,SJ:0,TQ:4,TJ:0,RT:0},
-    {label:'2º Sim',date:'28/03',  BG:6, CG:0,CX:1,MD:0,NI:3,RM:6,SJ:0,TQ:4,TJ:1,RT:0},
-    {label:'3º Sim',date:'11/04',  BG:4, CG:0,CX:1,MD:1,NI:3,RM:4,SJ:0,TQ:3,TJ:1,RT:0},
+    {label:'1º Sim',date:'21/03',  BG:15,CG:3,CX:2,MD:1,NI:2,RM:2,SJ:0,TQ:4,TJ:0,RT:0},
+    {label:'2º Sim',date:'28/03',  BG:8, CG:0,CX:1,MD:0,NI:3,RM:6,SJ:0,TQ:4,TJ:1,RT:0},
+    {label:'3º Sim',date:'11/04',  BG:6, CG:0,CX:1,MD:1,NI:3,RM:4,SJ:0,TQ:3,TJ:1,RT:0},
   ],
 };
 
@@ -317,8 +357,9 @@ function init(){
   ALL_INSTS.forEach(i=>{
     document.getElementById('filInst').innerHTML+=`<option value="${i}">${i}</option>`;
     document.getElementById('chartInst').innerHTML+=`<option value="${i}">${i}</option>`;
+    document.getElementById('rankInst').innerHTML+=`<option value="${i}">${i}</option>`;
   });
-  renderUnit();renderGeral();renderChart();renderSims();
+  renderUnit();renderGeral();renderChart();renderSims();renderRank();
 }
 
 function selUnit(u){
@@ -516,6 +557,9 @@ function renderDetail(){
   }
 
   const showChart=sims&&sims.length>=2;
+  const _wsVals=sims&&sims.length?sims.map(s=>simVal(s,u)):[];
+  const _wsInit=_wsVals.length?Math.round(_wsVals.reduce((a,b)=>a+b)/_wsVals.length):0;
+  const _wsMax=Math.max((m26||0)*2,_wsInit*2,20);
   document.getElementById('det').innerHTML=`
     <div class="det-back" onclick="closeDetail()">← Voltar para Concursos — ${UN[u]}</div>
     <div class="det-title-row">
@@ -546,9 +590,27 @@ function renderDetail(){
     <div class="chart-card">
       <div class="chart-hdr"><h3>${inst} — ${UN[u]}</h3></div>
       <div class="chart-wrap" style="height:260px"><canvas id="detChart"></canvas></div>
+    </div>`:''}
+    ${sims&&sims.length?`
+    <div class="slbl" style="margin-top:24px">🎲 Calculadora "E se?"</div>
+    <div class="ws-card">
+      <div class="ws-hdr">
+        <span class="ws-title">Se o próximo <b>${inst}</b> em <b>${UN[u]}</b> resultar em <strong id="wsSliderVal">${_wsInit}</strong> aprovações, a projeção seria…</span>
+        <span class="ws-badge">hipotético · não altera dados reais</span>
+      </div>
+      <input type="range" class="ws-slider" id="wsSlider" min="0" max="${_wsMax}" value="${_wsInit}" oninput="wsUpdate(+this.value)">
+      <div class="ws-labels"><span>0</span><span>${Math.round(_wsMax/2)}</span><span>${_wsMax}</span></div>
+      <div class="ws-result-grid">
+        <div class="ws-result-item"><div class="ws-ri-lbl">Nova Projeção</div><div class="ws-ri-val" id="wsProj">—</div></div>
+        <div class="ws-result-item"><div class="ws-ri-lbl">% da Meta</div><div class="ws-ri-val" id="wsPct">—</div></div>
+        <div class="ws-result-item"><div class="ws-ri-lbl">Variação</div><div class="ws-ri-val" id="wsDiff">—</div></div>
+        <div class="ws-result-item"><div class="ws-ri-lbl">Faltam</div><div class="ws-ri-val" id="wsFalta">—</div></div>
+      </div>
+      <div id="wsMsg" class="ws-msg"></div>
     </div>`:''}`;
 
   if(showChart) setTimeout(()=>renderDetChart(inst,u),50);
+  if(sims&&sims.length) setTimeout(()=>wsUpdate(+document.getElementById('wsSlider').value),60);
 }
 
 function renderDetChart(inst,u){
@@ -749,6 +811,116 @@ function renderChart(){
       y:{ticks:{color:'#374151',stepSize:1},grid:{color:'rgba(0,0,0,.06)'},title:{display:true,text:'Aprovações',color:'#6b7280',font:{size:11}}}},
     plugins:{legend:{position:'bottom',labels:{color:'#374151',font:{size:11,weight:'bold'},padding:16,usePointStyle:true}},
       tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${c.parsed.y}`}}}}});
+}
+
+// ── E se? Calculator ──
+function wsUpdate(val){
+  const slEl=document.getElementById('wsSlider');
+  if(!slEl)return;
+  const inst=aInst,u=aUnit;
+  const sims=SIMS[inst];
+  const m26=RAW[u]&&RAW[u][inst]?RAW[u][inst].m26:null;
+  const iVal=Math.max(0,Math.min(Math.round(val),+slEl.max));
+  const pct100=Math.round(iVal/+slEl.max*100);
+  slEl.style.background=`linear-gradient(90deg,#2563eb ${pct100}%,#e5e7eb ${pct100}%)`;
+  const sv=document.getElementById('wsSliderVal');
+  if(sv)sv.textContent=iVal;
+  if(!sims||!sims.length)return;
+  const simVals=sims.map(s=>simVal(s,u));
+  const curProj=proj(u,inst)||0;
+  const wsProj=Math.round((simVals.reduce((a,b)=>a+b)+iVal)/(simVals.length+1));
+  const wsPct=m26&&m26>0?Math.round(wsProj/m26*100):0;
+  const diff=wsProj-curProj;
+  const falta=m26?Math.max(0,m26-wsProj):null;
+  const col=wsPct>=100?'var(--g6)':wsPct>=70?'var(--a6)':'var(--r6)';
+  const el=id=>document.getElementById(id);
+  if(el('wsProj')){el('wsProj').textContent=wsProj;el('wsProj').style.color=col;}
+  if(el('wsPct')){el('wsPct').textContent=wsPct+'%';el('wsPct').style.color=col;}
+  if(el('wsDiff')){
+    el('wsDiff').textContent=(diff>=0?'+':'')+diff;
+    el('wsDiff').style.color=diff>0?'var(--g6)':diff<0?'var(--r6)':'var(--n4)';
+  }
+  if(el('wsFalta')){
+    el('wsFalta').textContent=falta!==null?falta:'—';
+    el('wsFalta').style.color=falta===0?'var(--g6)':'var(--r6)';
+  }
+  if(el('wsMsg')){
+    const msg=wsPct>=100?'✅ Ficaria na meta!':
+      wsPct>=70?`⚠️ Faltariam ${m26-wsProj} aprovações para a meta.`:
+      `❌ Faltariam ${m26!=null?m26-wsProj:'—'} aprovações — ainda abaixo da meta.`;
+    const bg=wsPct>=100?'#f0fdf4':wsPct>=70?'#fffbeb':'#fef2f2';
+    const bord=wsPct>=100?'#bbf7d0':wsPct>=70?'#fde68a':'#fecaca';
+    el('wsMsg').textContent=msg;
+    el('wsMsg').style.background=bg;el('wsMsg').style.border=`1px solid ${bord}`;
+  }
+}
+
+// ── Ranking de Unidades ──
+function renderRank(){
+  const selEl=document.getElementById('rankInst');
+  if(!selEl)return;
+  const sel=selEl.value;
+  const rows=NG.map(u=>{
+    if(sel==='ALL'){
+      const vis=INSTS.filter(i=>RAW[u][i]&&RAW[u][i].m26!==null&&RAW[u][i].m26>0);
+      if(!vis.length)return{u,meta:0,projT:0,pct:null,n:0};
+      const meta=vis.reduce((s,i)=>s+RAW[u][i].m26,0);
+      const projT=vis.reduce((s,i)=>{const p=proj(u,i);return s+(p||0);},0);
+      return{u,meta,projT,pct:meta>0?Math.round(projT/meta*100):0,n:vis.length};
+    }
+    const d=RAW[u][sel];
+    if(!d||d.m26===null)return{u,meta:null,projT:null,pct:null,n:0};
+    const p=proj(u,sel);
+    const pct=d.m26>0&&p!==null?Math.round(p/d.m26*100):0;
+    return{u,meta:d.m26,projT:p,pct:p!==null?pct:null,n:p!==null?1:0};
+  });
+  rows.sort((a,b)=>{
+    if(a.pct===null&&b.pct===null)return 0;
+    if(a.pct===null)return 1;if(b.pct===null)return -1;
+    return b.pct-a.pct;
+  });
+  const withData=rows.filter(r=>r.pct!==null);
+  const onMeta=withData.filter(r=>r.pct>=100).length;
+  const near=withData.filter(r=>r.pct>=70&&r.pct<100).length;
+  const below=withData.filter(r=>r.pct<70).length;
+  const medals=['🥇','🥈','🥉'];
+  let rank=0;
+  const rowsHtml=rows.map(r=>{
+    if(r.pct===null)return`<div class="rank-row rank-na">
+      <span class="rank-pos" style="background:#e5e7eb;color:var(--n5);font-size:13px">—</span>
+      <div class="rank-body"><div class="rank-name-row"><span class="rank-name">${UN[r.u]}</span></div>
+      <div style="font-size:12px;color:var(--n4)">Sem dados para este concurso</div></div></div>`;
+    rank++;
+    const medal=rank<=3?medals[rank-1]:rank+'º';
+    const bgPos=rank<=3?['#f59e0b','#9ca3af','#f97316'][rank-1]:'#e5e7eb';
+    const fgPos=rank<=3?'#fff':'var(--n5)';
+    const pctCol2=r.pct>=100?'var(--g6)':r.pct>=70?'var(--a6)':'var(--r6)';
+    const barCls=r.pct>=100?'bar-gn':r.pct>=70?'bar-am':'bar-rd';
+    const bdgCls=r.pct>=100?'bge-gn':r.pct>=70?'bge-am':'bge-rd';
+    const bdgTxt=r.pct>=100?'✓ Na meta':r.pct>=70?r.pct+'% — Próximo':r.pct+'% — Abaixo';
+    const falta=r.meta>0&&r.projT!==null?Math.max(0,r.meta-r.projT):null;
+    return`<div class="rank-row${rank<=3?' rank-top':''}" onclick="selUnit('${r.u}');sw('visao')">
+      <span class="rank-pos" style="background:${bgPos};color:${fgPos};font-size:${rank<=3?'18px':'13px'}">${medal}</span>
+      <div class="rank-body">
+        <div class="rank-name-row"><span class="rank-name">${UN[r.u]}</span><span class="bge ${bdgCls}">${bdgTxt}</span></div>
+        <div class="rank-prog-row">
+          <div class="rank-prog-track"><div class="rank-prog-fill ${barCls}" style="width:${Math.min(100,r.pct)}%"></div></div>
+          <span class="rank-pct" style="color:${pctCol2}">${r.pct}%</span>
+        </div>
+        <div class="rank-nums">
+          <span>Meta: <b>${r.meta??'—'}</b></span>
+          <span>Projeção: <b style="color:${pctCol2}">${r.projT??'—'}</b></span>
+          ${falta!==null&&falta>0?`<span style="color:var(--r6)">Faltam: <b>${falta}</b></span>`:''}
+          ${sel==='ALL'?`<span style="color:var(--n4)">${r.n} concurso${r.n!==1?'s':''} com dados</span>`:''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('rankSummary').innerHTML=`
+    <div class="rank-kpi"><div class="rk-n" style="color:var(--g6)">${onMeta}</div><div class="rk-l">✓ Na Meta</div></div>
+    <div class="rank-kpi"><div class="rk-n" style="color:var(--a6)">${near}</div><div class="rk-l">⚠ Próximas</div></div>
+    <div class="rank-kpi"><div class="rk-n" style="color:var(--r6)">${below}</div><div class="rk-l">✗ Abaixo</div></div>`;
+  document.getElementById('rankBody').innerHTML=rowsHtml;
 }
 
 init();
